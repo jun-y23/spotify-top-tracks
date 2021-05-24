@@ -5,6 +5,7 @@ import requests
 import csv
 import boto3
 from botocore.exceptions import ClientError
+import datetime
 
 token = settings.TOKEN
 token_endpoint = 'https://accounts.spotify.com/api/token'
@@ -16,6 +17,9 @@ top_tracks_endpoint = 'https://api.spotify.com/v1/artists/{}/top-tracks?market=J
 
 top_ten_track_list = []
 s3_client = boto3.client('s3')
+
+now = datetime.datetime.now()
+filename = 'bz_top_tracks_{0:%Y%m%d}.csv'.format(now)
 
 def fetch_top_tracks():
     # get bearer token
@@ -37,12 +41,13 @@ def fetch_top_tracks():
     track_rank = sorted(top_ten_track_list, key=lambda x: x['popularity'], reverse=True)
     print(track_rank)
     write_csv(track_rank)
-    upload_file('bz.csv', 'bz-top-tracks')
+    upload_file(filename, 'bz-top-tracks')
 
 csv_columns = ['name', 'popularity', 'uri']
+
 def write_csv(list):
     try:
-        with open('bz.csv', 'w') as f:
+        with open(filename, 'w') as f:
             w = csv.DictWriter(f, fieldnames=csv_columns)
             w.writeheader()
             for data in list:
