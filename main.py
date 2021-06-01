@@ -1,5 +1,5 @@
 # main script fetch top tracks
-import settings
+import os
 import json
 import requests
 import csv
@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 import datetime
 
-token = settings.TOKEN
+token = os.getenv('TOKEN')
 token_endpoint = 'https://accounts.spotify.com/api/token'
 payload = {'grant_type': 'client_credentials'}
 headers = {'Authorization': 'Basic {}'.format(token)}
