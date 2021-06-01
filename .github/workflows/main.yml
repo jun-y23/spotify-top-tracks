@@ -38,4 +38,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_default_region: 'ap-northeast-1'
           TOKEN: ${{ secrets.TOKEN }}
-        run: docker-compose up
+        run: docker-compose up --force-recreate
