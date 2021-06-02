@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 import datetime
 
-token = os.environ('TOKEN')
+token = os.environ['TOKEN']
 token_endpoint = 'https://accounts.spotify.com/api/token'
 payload = {'grant_type': 'client_credentials'}
 headers = {'Authorization': 'Basic {}'.format(token)}
