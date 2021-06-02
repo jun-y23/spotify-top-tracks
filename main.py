@@ -69,4 +69,5 @@ def upload_file(file_name, bucket, object_name=None):
         return False
     return True
 
-fetch_top_tracks()
+if __name__ == "__main__":
+    fetch_top_tracks()
