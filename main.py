@@ -12,15 +12,15 @@ token_endpoint = 'https://accounts.spotify.com/api/token'
 payload = {'grant_type': 'client_credentials'}
 headers = {'Authorization': 'Basic {}'.format(token)}
 
-bz_id = '7i9bNUSGORP5MIgrii3cJc'
+bz = '7i9bNUSGORP5MIgrii3cJc'
 param_market = 'JP'
-top_tracks_endpoint = 'https://api.spotify.com/v1/artists/{}/top-tracks?market={}'.format(bz_id, param_market)
+top_tracks_endpoint = 'https://api.spotify.com/v1/artists/{}/top-tracks?market={}'.format(bz, param_market)
 
 top_ten_track_list = []
 s3_client = boto3.client('s3')
 
 now = datetime.datetime.now()
-filename = 'result_{0:%Y%m%d}.csv'.format(now)
+filename = 'bz/result_{0:%Y%m%d}.csv'.format(now)
 
 def fetch_top_tracks():
     # get bearer token
