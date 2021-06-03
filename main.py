@@ -42,7 +42,7 @@ def fetch_top_tracks():
     track_rank = sorted(top_ten_track_list, key=lambda x: x['popularity'], reverse=True)
     print(track_rank)
     write_csv(track_rank)
-    upload_file(filename, 'spotify-top10-tracks', 'bz/{}'.format(file_name))
+    upload_file(filename, 'spotify-top10-tracks', 'bz/{}'.format(filename))
 
 csv_columns = ['name', 'popularity', 'uri']
 
