@@ -12,15 +12,15 @@ token_endpoint = 'https://accounts.spotify.com/api/token'
 payload = {'grant_type': 'client_credentials'}
 headers = {'Authorization': 'Basic {}'.format(token)}
 
-bz = '7i9bNUSGORP5MIgrii3cJc'
-param_market = 'JP'
-top_tracks_endpoint = 'https://api.spotify.com/v1/artists/{}/top-tracks?market={}'.format(bz, param_market)
+bz_id = '7i9bNUSGORP5MIgrii3cJc'
+market_list = ['JP', 'US']
 
 top_ten_track_list = []
 s3_client = boto3.client('s3')
 
 now = datetime.datetime.now()
 filename = 'result_{0:%Y%m%d}.csv'.format(now)
+csv_columns = ['name', 'popularity', 'uri']
 
 def fetch_top_tracks():
     # get bearer token
@@ -30,21 +30,20 @@ def fetch_top_tracks():
 
     header_params = {'Authorization': 'Bearer {}'.format(access_token)}
 
-    res = requests.get(top_tracks_endpoint, headers=header_params)
-    res_data = res.json()
-    track_list = res_data['tracks']
+    market in market_list:
+        res = requests.get('https://api.spotify.com/v1/artists/{}/top-tracks?market={}'.format(bz_id, market), headers=header_params)
+        res_data = res.json()
+        track_list = res_data['tracks']
 
-    keys =set(["name", "popularity", "uri"])
-    for track in track_list:
-        result = dict(filter(lambda x: x[0] in keys, track.items()))
-        top_ten_track_list.append(result)
+        keys =set(["name", "popularity", "uri"])
+        for track in track_list:
+            result = dict(filter(lambda x: x[0] in keys, track.items()))
+            top_ten_track_list.append(result)
 
-    track_rank = sorted(top_ten_track_list, key=lambda x: x['popularity'], reverse=True)
-    print(track_rank)
-    write_csv(track_rank)
-    upload_file(filename, 'spotify-top10-tracks', 'bz/{}'.format(filename))
-
-csv_columns = ['name', 'popularity', 'uri']
+        track_rank = sorted(top_ten_track_list, key=lambda x: x['popularity'], reverse=True)
+        print(track_rank)
+        write_csv(track_rank)
+        upload_file(filename, 'spotify-top10-tracks', 'bz/{}/{}'.format(market.lower(), filename))
 
 def write_csv(list):
     try:
