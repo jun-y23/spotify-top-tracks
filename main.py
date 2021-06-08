@@ -30,7 +30,7 @@ def fetch_top_tracks():
 
     header_params = {'Authorization': 'Bearer {}'.format(access_token)}
 
-    market in market_list:
+    for market in market_list:
         res = requests.get('https://api.spotify.com/v1/artists/{}/top-tracks?market={}'.format(bz_id, market), headers=header_params)
         res_data = res.json()
         track_list = res_data['tracks']
