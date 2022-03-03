@@ -1,11 +1,11 @@
 # main script fetch top tracks
-import os
-import json
-import requests
-import csv
 import boto3
 from botocore.exceptions import ClientError
+import csv
 import datetime
+import json
+import os
+import requests
 
 token = os.environ['SPOTIFY_TOKEN']
 token_endpoint = 'https://accounts.spotify.com/api/token'
